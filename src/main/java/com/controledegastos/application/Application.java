@@ -7,28 +7,32 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-@SpringBootApplication
+//@SpringBootApplication
 public class Application {
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+//        SpringApplication.run(Application.class, args);
 
         List<Gasto>gastos = new ArrayList<>();
 
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Selecione a ação: ");
-        System.out.println("1. Adicionar gasto");
-        System.out.println("2. Remover gasto");
-        System.out.println("3. Calcular total de gastos");
 
-        int acao = scanner.nextInt();
+        int acao = 1;
 
-        if (acao == 1){
-            System.out.println("Digite o produto e o seu valor");
-            String resposta = scanner.next();
-            gastos.add(getGasto(resposta));
-            System.out.println(gastos.get(0).getDescricao());
-            System.out.println(gastos.get(0).getValor());
+        while(acao != 0){
+            System.out.println("Selecione a ação: ");
+            System.out.println("1. Adicionar gasto");
+            System.out.println("2. Remover gasto");
+            System.out.println("3. Calcular total de gastos");
+            System.out.println("0. Sair");
+            acao = scanner.nextInt();
+
+            if (acao == 1){
+                System.out.println("Digite o produto e o seu valor");
+                String resposta = scanner.next();
+                gastos.add(getGasto(resposta));
+            }
+
         }
 
     }
