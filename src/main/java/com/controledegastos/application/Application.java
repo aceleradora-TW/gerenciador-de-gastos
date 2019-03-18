@@ -21,43 +21,51 @@ public class Application {
 
         while(acao != 0){
             System.out.println("Selecione a ação: ");
-            System.out.println("1. Adicionar gasto");
-            System.out.println("2. Remover gasto");
-            System.out.println("3. Calcular total de gastos");
-            System.out.println("4. Ver lista");
-            System.out.println("0. Sair");
+            System.out.println("1. Adicionar gasto \n" +
+                    "2. Remover gasto \n" +
+                    "3. Calcular total de gastos \n" +
+                    "4. Ver lista \n" +
+                    "0. Sair");
             acao = scanner.nextInt();
 
-            if (acao == 1){
-                System.out.println("Digite o produto e o seu valor");
-                String resposta = scanner.next();
-                gastos.add(getGasto(resposta));
-            }
-            if(acao == 2) {
-                System.out.println("Listas de gastos");
-                for (int i = 0; i < gastos.size(); i++) {
-                    System.out.println(i + "-" + gastos.get(i).toString());
+            switch (acao){
+
+                case 1:
+                    System.out.println("Digite o produto e o seu valor");
+                    String resposta = scanner.next();
+                    gastos.add(getGasto(resposta));
+                    break;
+                case 2:
+                    System.out.println("Listas de gastos:");
+                    for(int i=0; i<gastos.size(); i++){
+                        System.out.println(i + "-" + gastos.get(i).toString());
+
+                    }
                     System.out.println("Digite o número do item que você deseja remover:");
                     int itemRemovido = scanner.nextInt();
                     gastos.remove(gastos.get(itemRemovido));
-                }
-            }
-            if(acao == 3){
-                Double valorTotal= 0.0;
-                System.out.println("Valor total da lista de gastos");
-                for(int i=0; i<gastos.size(); i++){
-                    valorTotal =valorTotal + gastos.get(i).getValor();
-                }
-                System.out.println(valorTotal);
-            }
-            if(acao == 4){
-                System.out.println("Listas de gastos");
-                for(int i=0; i<gastos.size(); i++){
-                    System.out.println(i + "-" + gastos.get(i).toString());
-                }
-            }
+                    break;
+                case 3:
+                    Double valorTotal= 0.0;
+                    System.out.println("Valor total da lista de gastos");
+                    for(int i=0; i<gastos.size(); i++){
+                        valorTotal =valorTotal + gastos.get(i).getValor();
+                    }
+                    System.out.println(valorTotal);
+                    break;
+                case 4:
+                    System.out.println("Listas de gastos");
+                    for(int i=0; i<gastos.size(); i++){
+                        System.out.println(i + "-" + gastos.get(i).toString());
+                    }
+                    break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("Você não digitou nenhuma das opções e/ou digitou uma opção inválida");
             }
         }
+    }
     public static Gasto getGasto(String resposta){
         String descricao[] = resposta.split(";");
         Double valor = parseValor(descricao[1]);
@@ -69,6 +77,5 @@ public class Application {
         Double valorDouble = Double.parseDouble(valor);
         return valorDouble;
     }
-
 
 }

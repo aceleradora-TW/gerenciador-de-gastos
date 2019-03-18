@@ -25,10 +25,10 @@ public class Gasto {
         this.valor = valor;
     }
 
-@Override
-public String toString(){
+    @Override
+    public String toString(){
         return "Produto: " + descricao + " valor: " + valor;
-}
     }
+}
 
 
