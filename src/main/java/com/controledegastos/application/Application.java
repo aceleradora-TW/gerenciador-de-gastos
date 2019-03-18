@@ -1,8 +1,6 @@
 package com.controledegastos.application;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -25,15 +23,17 @@ public class Application {
                     "2. Remover gasto \n" +
                     "3. Calcular total de gastos \n" +
                     "4. Ver lista \n" +
+                    "5. Calcular total por categoria\n" +
+                    "6. Calcular total por estabelecimento\n" +
                     "0. Sair");
             acao = scanner.nextInt();
 
             switch (acao){
 
                 case 1:
-                    System.out.println("Digite o produto e o seu valor");
+                    System.out.println("Digite o produto, a categoria, o valor e o estabelecimento");
                     String resposta = scanner.next();
-                    gastos.add(getGasto(resposta));
+                    gastos.add(GetResposta(resposta));
                     break;
                 case 2:
                     System.out.println("Listas de gastos:");
@@ -59,6 +59,12 @@ public class Application {
                         System.out.println(i + "-" + gastos.get(i).toString());
                     }
                     break;
+                case 5:
+                    for(int i = 0; i < gastos.size(); i++){
+                        System.out.println(gastos.get(i).getCategoria());
+                    }
+
+                        break;
                 case 0:
                     break;
                 default:
@@ -66,10 +72,11 @@ public class Application {
             }
         }
     }
-    public static Gasto getGasto(String resposta){
-        String descricao[] = resposta.split(";");
-        Double valor = parseValor(descricao[1]);
-        Gasto gasto = new Gasto(descricao[0], valor);
+    public static Gasto GetResposta(String resposta){
+        String ArrayResposta[] = resposta.split(";");
+        Double valor = parseValor(ArrayResposta[2]);
+        Gasto gasto = new Gasto(ArrayResposta[0],ArrayResposta[1], valor, ArrayResposta[3]);
+        System.out.println(ArrayResposta[0]);
         return gasto;
     }
 
@@ -77,5 +84,4 @@ public class Application {
         Double valorDouble = Double.parseDouble(valor);
         return valorDouble;
     }
-
 }
