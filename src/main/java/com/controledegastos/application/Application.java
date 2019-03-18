@@ -24,6 +24,7 @@ public class Application {
             System.out.println("1. Adicionar gasto");
             System.out.println("2. Remover gasto");
             System.out.println("3. Calcular total de gastos");
+            System.out.println("4. Ver lista");
             System.out.println("0. Sair");
             acao = scanner.nextInt();
 
@@ -32,11 +33,31 @@ public class Application {
                 String resposta = scanner.next();
                 gastos.add(getGasto(resposta));
             }
-
+            if(acao == 2) {
+                System.out.println("Listas de gastos");
+                for (int i = 0; i < gastos.size(); i++) {
+                    System.out.println(i + "-" + gastos.get(i).toString());
+                    System.out.println("Digite o número do item que você deseja remover:");
+                    int itemRemovido = scanner.nextInt();
+                    gastos.remove(gastos.get(itemRemovido));
+                }
+            }
+            if(acao == 3){
+                Double valorTotal= 0.0;
+                System.out.println("Valor total da lista de gastos");
+                for(int i=0; i<gastos.size(); i++){
+                    valorTotal =valorTotal + gastos.get(i).getValor();
+                }
+                System.out.println(valorTotal);
+            }
+            if(acao == 4){
+                System.out.println("Listas de gastos");
+                for(int i=0; i<gastos.size(); i++){
+                    System.out.println(i + "-" + gastos.get(i).toString());
+                }
+            }
+            }
         }
-
-    }
-
     public static Gasto getGasto(String resposta){
         String descricao[] = resposta.split(";");
         Double valor = parseValor(descricao[1]);
