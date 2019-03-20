@@ -1,16 +1,18 @@
 package com.controledegastos.application;
 
 public class Gasto {
-    String descricao;
-    String categoria;
-    double valor;
-    String estabelecimento;
+   private String descricao;
+   private String categoria;
+   private double valor;
+   private String estabelecimento;
+   private String moeda;
 
-    public Gasto(String descricao, String categoria, double valor, String estabelecimento) {
+    public Gasto(String descricao, String categoria, double valor, String estabelecimento, String moeda) {
         this.descricao = descricao;
         this.categoria = categoria;
         this.valor = valor;
         this.estabelecimento = estabelecimento;
+        this.moeda = moeda;
     }
 
     public String getDescricao() {
@@ -45,6 +47,13 @@ public class Gasto {
         this.estabelecimento = estabelecimento;
     }
 
+    public String getMoeda() {
+        return moeda;
+    }
+
+    public void setMoeda(String moeda) {
+        this.moeda = moeda;
+    }
 
     @Override
     public String toString() {
@@ -53,6 +62,7 @@ public class Gasto {
                 ", categoria='" + categoria + '\'' +
                 ", valor=" + valor +
                 ", estabelecimento='" + estabelecimento + '\'' +
+                ", moeda='" + moeda + '\'' +
                 '}';
     }
 }
