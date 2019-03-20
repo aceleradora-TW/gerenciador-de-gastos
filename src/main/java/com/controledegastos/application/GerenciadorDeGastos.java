@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class GerenciadorDeGastos {
 
@@ -49,13 +50,12 @@ public class GerenciadorDeGastos {
         System.out.println(valorTotal);
     }
     public void calculaTotalCategoria(){
-        System.out.println("Digite o nome da categoria que você que quer obter o total:");
-        String respostaCategoria = scanner.next();
+        String categoria = mostraCategorias();
+
         List<Gasto> gastosDaCategoria = gastos
                 .stream()
-                .filter(gasto -> gasto.getCategoria().equals(respostaCategoria))
+                .filter(gasto -> gasto.getCategoria().equalsIgnoreCase(categoria))
                 .collect(Collectors.toList());
-
         Double valorFinal = 0.0;
         for(int i=0; i<gastosDaCategoria.size(); i++) {
             valorFinal = valorFinal + gastosDaCategoria.get(i).getValor();
@@ -67,7 +67,7 @@ public class GerenciadorDeGastos {
         String respostaEstab = scanner.next();
         List<Gasto> gastosEstab = gastos
                 .stream()
-                .filter(gasto -> gasto.getEstabelecimento().equals(respostaEstab))
+                .filter(gasto -> gasto.getEstabelecimento().equalsIgnoreCase(respostaEstab))
                 .collect(Collectors.toList());
 
         Double valorEstab = 0.0;
@@ -115,5 +115,19 @@ public class GerenciadorDeGastos {
     public static Double calculaTaxaImportacao(Double valorBrl, Taxa taxaCambio){
         Double imposto = (valorBrl * taxaCambio.getTaxaImportacao())/100;
         return imposto + valorBrl;
+    }
+
+    public String mostraCategorias(){
+        List<String> categoriasDiferentes = gastos
+                .stream()
+                .map(item -> item.getCategoria())
+                .distinct().collect(Collectors.toList());
+
+        for(int i=0 ; i < categoriasDiferentes.size(); i++){
+            System.out.println(i + "-" + categoriasDiferentes.get(i));
+        }
+        System.out.println("Selecione uma categoria:");
+        int respostaCategoria = scanner.nextInt();
+        return categoriasDiferentes.get(respostaCategoria);
     }
 }
