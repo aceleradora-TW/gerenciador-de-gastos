@@ -1,24 +1,20 @@
 package com.controledegastos.application;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
-import java.util.stream.Collectors;
+import java.util.*;
 
 //@SpringBootApplication
 public class Application {
 
-    public static void main(String[] args) {
+    public static void main(String[] args){
 //        SpringApplication.run(Application.class, args);
 
         Scanner scanner = new Scanner(System.in);
 
         GerenciadorDeGastos gerenciadorDeGastos = new GerenciadorDeGastos();
 
-        int acao = 1;
+        int acao = -1;
 
-        while(acao != 0){
+        while(acao != 0) {
             System.out.println("Selecione a ação: ");
             System.out.println("1. Adicionar gasto \n" +
                     "2. Remover gasto \n" +
@@ -27,9 +23,14 @@ public class Application {
                     "5. Calcular total por categoria\n" +
                     "6. Calcular total por estabelecimento\n" +
                     "0. Sair");
-            acao = scanner.nextInt();
 
-            switch (acao){
+            try {
+                acao = scanner.nextInt();
+            } catch (InputMismatchException exception) {
+                scanner.next();
+            }
+
+            switch (acao) {
 
                 case 1:
                     gerenciadorDeGastos.adicionaGasto();
