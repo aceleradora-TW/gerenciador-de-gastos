@@ -1,11 +1,11 @@
 package com.controledegastos.application;
 
 public class Gasto {
-   private String descricao;
-   private String categoria;
-   private double valor;
-   private String estabelecimento;
-   private String moeda;
+    private String descricao;
+    private String categoria;
+    private double valor;
+    private String estabelecimento;
+    private String moeda;
 
     public Gasto(String descricao, String categoria, double valor, String estabelecimento, String moeda) {
         this.descricao = descricao;

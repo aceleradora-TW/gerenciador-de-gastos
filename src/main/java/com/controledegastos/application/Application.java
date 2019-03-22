@@ -1,6 +1,8 @@
 package com.controledegastos.application;
 
-import java.util.*;
+
+import java.util.InputMismatchException;
+import java.util.Scanner;
 
 //@SpringBootApplication
 public class Application {
@@ -11,7 +13,7 @@ public class Application {
         Scanner scanner = new Scanner(System.in);
 
         GerenciadorDeGastos gerenciadorDeGastos = new GerenciadorDeGastos();
-        ControlaGastos controlaGastos = new ControlaGastos();
+        InterfaceUsuario controlaGastos = new InterfaceUsuario();
         int acao = -1;
 
         while(acao != 0) {

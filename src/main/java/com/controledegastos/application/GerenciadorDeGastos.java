@@ -3,10 +3,9 @@ package com.controledegastos.application;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 import java.util.stream.Collectors;
 
-public class GerenciadorDeGastos {
+public class  GerenciadorDeGastos {
 
     static final List<Taxa> TAXA_CAMBIO = Arrays.asList(
             new Taxa(Moeda.REAL_BRASILEIRO, 1.0, 1.0),
@@ -16,17 +15,15 @@ public class GerenciadorDeGastos {
     );
 
     List<Gasto> gastos = new ArrayList<>();
-    
-    ControlaGastos controlaGastos = new ControlaGastos();
 
     public void adicionaGasto() {
-        String respostaGasto = controlaGastos.responda("Digite o produto, a categoria, o valor, o estabelecimento e a moeda do país de compra");
+        String respostaGasto = InterfaceUsuario.responda("Digite o produto, a categoria, o valor, o estabelecimento e a moeda do país de compra");
         gastos.add(getGasto(respostaGasto));
     }
 
     public void removeGasto(){
-        controlaGastos.verLista(gastos);
-        int itemRemovido = controlaGastos.selecione("Digite o número do item que você deseja remover:");
+        InterfaceUsuario.verLista(gastos);
+        int itemRemovido = InterfaceUsuario.selecione("Digite o número do item que você deseja remover:");
         gastos.remove(gastos.get(itemRemovido));
     }
 
@@ -35,21 +32,21 @@ public class GerenciadorDeGastos {
         for(int i=0; i<gastos.size(); i++){
             valorTotal =valorTotal + gastos.get(i).getValor();
         }
-        controlaGastos.mostraInformacao("Valor total da lista de gastos: ", valorTotal);
+        InterfaceUsuario.mostraInformacao("Valor total da lista de gastos: ", valorTotal);
     }
 
     public void calculaTotalCategoria(){
         String categoria = mostraCategorias();
-
         List<Gasto> gastosDaCategoria = gastos
                 .stream()
                 .filter(gasto -> gasto.getCategoria().equalsIgnoreCase(categoria))
                 .collect(Collectors.toList());
-        Double valorCategoria = 0.0;
-        for(int i=0; i< gastosDaCategoria.size(); i++) {
-            valorCategoria = valorCategoria + gastosDaCategoria.get(i).getValor();
-        }
-        controlaGastos.mostraInformacao("Valor total da categoria: ", valorCategoria);
+
+        double valorCategoria = gastosDaCategoria
+                .stream()
+                .map(gasto -> gasto.getValor())
+                .reduce(0.0, (gastoA,gastoB) -> gastoA+ gastoB);
+        InterfaceUsuario.mostraInformacao("Valor total da categoria: ", valorCategoria);
     }
 
     public void calculaTotalEstabelecimento(){
@@ -61,11 +58,11 @@ public class GerenciadorDeGastos {
                 .filter(gasto -> gasto.getEstabelecimento().equalsIgnoreCase(estabelecimento))
                 .collect(Collectors.toList());
 
-        Double valorEstab = 0.0;
-        for(int i=0; i< gastosEstab.size();i++){
-            valorEstab = valorEstab + gastosEstab.get(i).getValor();
-        }
-        controlaGastos.mostraInformacao("Valor gasto no estabelecimento: ", valorEstab);
+        double valorEstab = gastosEstab
+                .stream()
+                .map(gasto -> gasto.getValor())
+                .reduce(0.0, (gastoA, gastoB) -> gastoA + gastoB);
+        InterfaceUsuario.mostraInformacao("Valor gasto no estabelecimento: ", valorEstab);
     }
 
     public static Gasto getGasto(String resposta){
@@ -106,8 +103,8 @@ public class GerenciadorDeGastos {
                 .stream()
                 .map(item -> item.getCategoria())
                 .distinct().collect(Collectors.toList());
-        controlaGastos.mostraLista(categoriasDiferentes);
-        int respostaCategoria = controlaGastos.selecione("Selecione uma categoria:");
+        InterfaceUsuario.mostraLista(categoriasDiferentes);
+        int respostaCategoria = InterfaceUsuario.selecione("Selecione uma categoria:");
         return categoriasDiferentes.get(respostaCategoria);
     }
 
@@ -116,12 +113,12 @@ public class GerenciadorDeGastos {
                 .stream()
                 .map(item -> item.getEstabelecimento())
                 .distinct().collect(Collectors.toList());
-        controlaGastos.mostraLista(estabelecimentosDiferentes);
-        int respostaEstabelecimento = controlaGastos.selecione("Selecione um estabelecimento:");
+        InterfaceUsuario.mostraLista(estabelecimentosDiferentes);
+        int respostaEstabelecimento = InterfaceUsuario.selecione("Selecione um estabelecimento:");
         return estabelecimentosDiferentes.get(respostaEstabelecimento);
     }
 
     public void verLista(){
-        controlaGastos.verLista(gastos);
+        InterfaceUsuario.verLista(gastos);
     }
 }
