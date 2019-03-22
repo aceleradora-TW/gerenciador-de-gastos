@@ -16,38 +16,28 @@ public class GerenciadorDeGastos {
     );
 
     List<Gasto> gastos = new ArrayList<>();
-
-    Scanner scanner = new Scanner(System.in);
+    
+    ControlaGastos controlaGastos = new ControlaGastos();
 
     public void adicionaGasto() {
-        System.out.println("Digite o produto, a categoria, o valor, o estabelecimento e a moeda do país de compra");
-        String respostaGasto = scanner.next();
+        String respostaGasto = controlaGastos.responda("Digite o produto, a categoria, o valor, o estabelecimento e a moeda do país de compra");
         gastos.add(getGasto(respostaGasto));
     }
+
     public void removeGasto(){
-        System.out.println("Listas de gastos:");
-        for(int i=0; i<gastos.size(); i++){
-            System.out.println(i + "-" + gastos.get(i).toString());
-        }
-        System.out.println("Digite o número do item que você deseja remover:");
-        int itemRemovido = scanner.nextInt();
+        controlaGastos.verLista(gastos);
+        int itemRemovido = controlaGastos.selecione("Digite o número do item que você deseja remover:");
         gastos.remove(gastos.get(itemRemovido));
     }
 
-    public void verLista(){
-        System.out.println("Listas de gastos");
-        for(int i=0; i<gastos.size(); i++){
-            System.out.println(i + "-" + gastos.get(i).toString());
-        }
-    }
     public void calculaTotalGastos(){
         Double valorTotal= 0.0;
-        System.out.println("Valor total da lista de gastos");
         for(int i=0; i<gastos.size(); i++){
             valorTotal =valorTotal + gastos.get(i).getValor();
         }
-        System.out.println(valorTotal);
+        controlaGastos.mostraInformacao("Valor total da lista de gastos: ", valorTotal);
     }
+
     public void calculaTotalCategoria(){
         String categoria = mostraCategorias();
 
@@ -55,15 +45,16 @@ public class GerenciadorDeGastos {
                 .stream()
                 .filter(gasto -> gasto.getCategoria().equalsIgnoreCase(categoria))
                 .collect(Collectors.toList());
-        Double valorFinal = 0.0;
+        Double valorCategoria = 0.0;
         for(int i=0; i< gastosDaCategoria.size(); i++) {
-            valorFinal = valorFinal + gastosDaCategoria.get(i).getValor();
+            valorCategoria = valorCategoria + gastosDaCategoria.get(i).getValor();
         }
-        System.out.println("Valor total da categoria: " + valorFinal);
+        controlaGastos.mostraInformacao("Valor total da categoria: ", valorCategoria);
     }
+
     public void calculaTotalEstabelecimento(){
 
-        String estabelecimento = mostraEstbelecimentos();
+        String estabelecimento = mostraEstabelecimentos();
 
         List<Gasto> gastosEstab = gastos
                 .stream()
@@ -74,25 +65,21 @@ public class GerenciadorDeGastos {
         for(int i=0; i< gastosEstab.size();i++){
             valorEstab = valorEstab + gastosEstab.get(i).getValor();
         }
-        System.out.println("Valor gasto no estabelecimento: " + valorEstab);
+        controlaGastos.mostraInformacao("Valor gasto no estabelecimento: ", valorEstab);
     }
-
 
     public static Gasto getGasto(String resposta){
         String arrayResposta[] = resposta.split(";");
         Double valor = parseValor(arrayResposta[2]);
         valor = buscaMoedaDisponivel(valor, arrayResposta[4]);
         Gasto gasto = new Gasto(arrayResposta[0],arrayResposta[1], valor, arrayResposta[3], arrayResposta[4]);
-        System.out.println(arrayResposta[0]);
         return gasto;
     }
-
 
     public static Double parseValor(String valor){
         Double valorDouble = Double.parseDouble(valor);
         return valorDouble;
     }
-
 
     public static Double buscaMoedaDisponivel(Double valor, String moedaOrigem){
         Taxa taxaCambio = TAXA_CAMBIO
@@ -104,12 +91,10 @@ public class GerenciadorDeGastos {
         return valorFinal;
     }
 
-
     public static Double calculaTaxaCambio(Double valor, Taxa taxaCambio){
         Double valorReal = valor * taxaCambio.getTaxaCambio();
         return valorReal;
     }
-
 
     public static Double calculaTaxaImportacao(Double valorBrl, Taxa taxaCambio){
         Double imposto = (valorBrl * taxaCambio.getTaxaImportacao())/100;
@@ -121,30 +106,22 @@ public class GerenciadorDeGastos {
                 .stream()
                 .map(item -> item.getCategoria())
                 .distinct().collect(Collectors.toList());
-
-        for(int i=0 ; i < categoriasDiferentes.size(); i++){
-            System.out.println(i + "-" + categoriasDiferentes.get(i));
-        }
-        System.out.println("Selecione uma categoria:");
-        int respostaCategoria = scanner.nextInt();
+        controlaGastos.mostraLista(categoriasDiferentes);
+        int respostaCategoria = controlaGastos.selecione("Selecione uma categoria:");
         return categoriasDiferentes.get(respostaCategoria);
     }
 
-    public String mostraEstbelecimentos(){
+    public String mostraEstabelecimentos(){
         List<String> estabelecimentosDiferentes = gastos
                 .stream()
                 .map(item -> item.getEstabelecimento())
                 .distinct().collect(Collectors.toList());
-        for(int i=0 ; i < estabelecimentosDiferentes.size(); i++){
-            System.out.println(i + "-" + estabelecimentosDiferentes.get(i));
-        }
-        System.out.println("Selecione um estabelecimento:");
-        int respostaEstabelecimento = scanner.nextInt();
+        controlaGastos.mostraLista(estabelecimentosDiferentes);
+        int respostaEstabelecimento = controlaGastos.selecione("Selecione um estabelecimento:");
         return estabelecimentosDiferentes.get(respostaEstabelecimento);
+    }
 
+    public void verLista(){
+        controlaGastos.verLista(gastos);
     }
 }
-
-
-
-

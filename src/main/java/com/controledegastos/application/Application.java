@@ -11,7 +11,7 @@ public class Application {
         Scanner scanner = new Scanner(System.in);
 
         GerenciadorDeGastos gerenciadorDeGastos = new GerenciadorDeGastos();
-
+        ControlaGastos controlaGastos = new ControlaGastos();
         int acao = -1;
 
         while(acao != 0) {

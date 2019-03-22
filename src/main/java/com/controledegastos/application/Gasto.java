@@ -61,7 +61,7 @@ public class Gasto {
                 "descricao='" + descricao + '\'' +
                 ", categoria='" + categoria + '\'' +
                 ", valor=" + valor +
-                ", estabelecimento='" + estabelecimento + '\'' +
+                ", mostraInformacao='" + estabelecimento + '\'' +
                 ", moeda='" + moeda + '\'' +
                 '}';
     }
