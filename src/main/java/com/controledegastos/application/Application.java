@@ -1,74 +1,70 @@
 package com.controledegastos.application;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
-//@SpringBootApplication
 public class Application {
 
-    public static void main(String[] args) {
-//        SpringApplication.run(Application.class, args);
+    static Scanner scanner = new Scanner(System.in);
+    static GerenciadorDeGastos gerenciadorDeGastos = new GerenciadorDeGastos();
+    InterfaceUsuario controlaGastos = new InterfaceUsuario();
 
-        List<Gasto>gastos = new ArrayList<>();
+    public static void main(String[] args) throws Exception {
 
-        Scanner scanner = new Scanner(System.in);
+        while(menu() != 0);
+    }
 
-        int acao = 1;
+    public static int menu() throws Exception {
+        int acao = -1;
 
-        while(acao != 0){
-            System.out.println("Selecione a ação: ");
-            System.out.println("1. Adicionar gasto");
-            System.out.println("2. Remover gasto");
-            System.out.println("3. Calcular total de gastos");
-            System.out.println("4. Ver lista");
-            System.out.println("0. Sair");
+        System.out.println("Selecione a ação: ");
+        System.out.println("1. Adicionar gasto \n" +
+                "2. Remover gasto \n" +
+                "3. Ver lista \n" +
+                "4. Calcular total de gastos \n" +
+                "5. Calcular total por categoria\n" +
+                "6. Calcular total por estabelecimento\n" +
+                "0. Sair");
+
+        try {
             acao = scanner.nextInt();
-
-            if (acao == 1){
-                System.out.println("Digite o produto e o seu valor");
-                String resposta = scanner.next();
-                gastos.add(getGasto(resposta));
-            }
-            if(acao == 2) {
-                System.out.println("Listas de gastos");
-                for (int i = 0; i < gastos.size(); i++) {
-                    System.out.println(i + "-" + gastos.get(i).toString());
-                    System.out.println("Digite o número do item que você deseja remover:");
-                    int itemRemovido = scanner.nextInt();
-                    gastos.remove(gastos.get(itemRemovido));
-                }
-            }
-            if(acao == 3){
-                Double valorTotal= 0.0;
-                System.out.println("Valor total da lista de gastos");
-                for(int i=0; i<gastos.size(); i++){
-                    valorTotal =valorTotal + gastos.get(i).getValor();
-                }
-                System.out.println(valorTotal);
-            }
-            if(acao == 4){
-                System.out.println("Listas de gastos");
-                for(int i=0; i<gastos.size(); i++){
-                    System.out.println(i + "-" + gastos.get(i).toString());
-                }
-            }
-            }
+        } catch (InputMismatchException exception) {
+            scanner.next();
         }
-    public static Gasto getGasto(String resposta){
-        String descricao[] = resposta.split(";");
-        Double valor = parseValor(descricao[1]);
-        Gasto gasto = new Gasto(descricao[0], valor);
-        return gasto;
+
+        switch (acao) {
+
+            case 1:
+                gerenciadorDeGastos.adicionaGasto();
+                break;
+
+            case 2:
+                gerenciadorDeGastos.removeGasto();
+                break;
+
+            case 3:
+                gerenciadorDeGastos.verLista();
+                break;
+
+            case 4:
+                gerenciadorDeGastos.calculaTotalGastos();
+                break;
+
+            case 5:
+                gerenciadorDeGastos.calculaTotalCategoria();
+                break;
+
+            case 6:
+                gerenciadorDeGastos.calculaTotalEstabelecimento();
+                break;
+
+            case 0:
+                break;
+
+            default:
+                System.out.println("Você não digitou nenhuma das opções e/ou digitou uma opção inválida");
+        }
+        return acao;
     }
-
-    public static Double parseValor(String valor){
-        Double valorDouble = Double.parseDouble(valor);
-        return valorDouble;
-    }
-
-
 }
