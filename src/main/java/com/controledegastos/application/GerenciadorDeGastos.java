@@ -18,7 +18,10 @@ public class  GerenciadorDeGastos {
 
     public void adicionaGasto() {
         String respostaGasto = InterfaceUsuario.responda("Digite o produto, a categoria, o valor, o estabelecimento e a moeda do país de compra");
-        gastos.add(getGasto(respostaGasto));
+        try {
+            gastos.add(getGasto(respostaGasto));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());}
     }
 
     public void removeGasto(){
@@ -65,7 +68,7 @@ public class  GerenciadorDeGastos {
         InterfaceUsuario.mostraInformacao("Valor gasto no estabelecimento: ", valorEstab);
     }
 
-    public static Gasto getGasto(String resposta){
+    public static Gasto getGasto(String resposta) throws Exception {
         String arrayResposta[] = resposta.split(";");
         Double valor = parseValor(arrayResposta[2]);
         valor = buscaMoedaDisponivel(valor, arrayResposta[4]);
@@ -78,11 +81,11 @@ public class  GerenciadorDeGastos {
         return valorDouble;
     }
 
-    public static Double buscaMoedaDisponivel(Double valor, String moedaOrigem){
+    public static Double buscaMoedaDisponivel(Double valor, String moedaOrigem) throws Exception {
         Taxa taxaCambio = TAXA_CAMBIO
                 .stream()
                 .filter(taxa -> taxa.getMoeda().getCodigo().equalsIgnoreCase(moedaOrigem))
-                .findFirst().get();
+                .findFirst().orElseThrow(() -> new ArrayIndexOutOfBoundsException(String.format("moeda indisponivel: %s", moedaOrigem)));
         Double valorBrl = calculaTaxaCambio(valor, taxaCambio);
         Double valorFinal = calculaTaxaImportacao(valorBrl, taxaCambio);
         return valorFinal;
